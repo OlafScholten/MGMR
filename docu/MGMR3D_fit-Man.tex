@@ -137,7 +137,7 @@ where $H$ denotes the height above ground and where the constants $a,b,c$ depend
 \end{tabular}
 \end{table}
 
-The dependence of the index of refraction on the height in the atmosphere is taken as given by the Gladstone–-Dale relation,
+The dependence of the index of refraction on the height in the atmosphere is taken as given by the Gladstone--Dale relation,
 \beq
 n_{GD}=1+n_\rho \rho(z) \;, \eqlab{GD}
 \eeq
@@ -221,17 +221,17 @@ with $\rho(z)$ [g/cm$^2$/m] as the air density and $a_t=3$. Results are shown in
 \begin{figure}[ht]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{TC-tr.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/TC-tr.pdf}
         \caption{Vertical shower with $X_0$=180 and $\Xmax$=820}\figlab{v-drift-vert}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{TC-tr-H.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/TC-tr-H.pdf}
         \caption{Horizontal shower at various heights} \figlab{v-drift-hor-rho}
     \end{subfigure}
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{TC-H3000-X.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/TC-H3000-X.pdf}
         \caption{Horizontal shower at various energies} \figlab{v-drift-hor-Xmax}
     \end{subfigure}
 \caption{\small
@@ -266,17 +266,17 @@ models the dependence of the charge excess fraction on penetration depth shown i
 \begin{figure}[ht]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{CX-tr.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/CX-tr.pdf}
         \caption{Vertical shower with $X_0$=180 and $\Xmax$=820}\figlab{v-drift-vert}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{CX-tr-H.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/CX-tr-H.pdf}
         \caption{Horizontal shower at various heights} \figlab{v-drift-hor-rho}
     \end{subfigure}
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{CX-H3000-X.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/CX-H3000-X.pdf}
         \caption{Horizontal shower at various energies} \figlab{v-drift-hor-Xmax}
     \end{subfigure}
 \caption{\small
@@ -516,7 +516,7 @@ as is also specified in the output of the program. It should be noted that the p
 \\The parameters should be specified in increasing order. The list {\bf terminates} when a lower parameter number is given.
 \\{\bf No parameter fitting} will be done when the first parameter number is =0 or negative.
 
-The second line specifies the name of the input file that contains the data to which the present calculation is compared. The intensity is normalized to the intensity in the data and a $\chi^2$ value is calculated. 
+The second line specifies the name of the input file that contains the data to which the present calculation is compared. The intensity is normalized to the intensity in the data and a $\chi^2$ value is calculated.
 \\When a {\bf non-existing file} is specified a straight MGMR3D calculation is performed.
 \\It is an option to specify on the same line the name of a file, \verb< "Results"< in the example, to which the {\bf results} for each antenna should be written. If no file is specified the default file \verb<plot/FitResult.dat< is taken
 \\\Added{28/10/'18}{New:} When a file is specified, also the time traces for each antenna will be written in separate files.
@@ -668,13 +668,13 @@ for free download) scripts that are included as part of this package. In \figref
 \begin{figure}[ht]
     \centering
     \begin{subfigure}[b]{0.55\textwidth}
-        \includegraphics[width=\textwidth]{runs/plot/sh-current.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/sh-current.pdf}
         \caption{} \figlab{sh-current}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{runs/plot/pulse-d.pdf}
+        \includegraphics[width=\textwidth]{Fig-Man/pulse-d.pdf}
         \caption{} \figlab{pulse-d}
     \end{subfigure}
 \caption{\small
@@ -684,7 +684,7 @@ Fig.~\subref{fig:sh-current}) shows the currents in the shower plasma as functio
 
 The Stokes parameters are displayed in \figref{FitStokes}
 \begin{figure}[ht]
- \includegraphics[width=0.99\textwidth]{runs/plot/FitStokes.pdf}
+ \includegraphics[width=0.99\textwidth]{Fig-Man/FitStokes.pdf}
  \caption{The Stokes parameters (blue squares) are compared with those from a microscopic CoREAS~\cite{Hue13} calculation (red crosses). Also shown are the relative deviations (times 10) for the intensities and the differences (times 10) for the other Stokes parameters.  \figlab{FitStokes}}
 \end{figure}
 
