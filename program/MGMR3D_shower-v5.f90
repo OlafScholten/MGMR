@@ -200,6 +200,14 @@
     b_ground=D_ESmooth*(PenDepth(0)-PenDepth(1))/(AtmHei_step*X_EM)  !
     !b_ground=0.
     If(N_frc.ge.1) then    ! skip when there is no electric field given
+      Do i=1,N_frc
+         z=h_frc(i)
+         If(abs(H_frc(i)).gt. AtmHei_dim *AtmHei_step ) Then
+            H_frc(i)=AtmHei_dim *AtmHei_step
+            write(2,*) 'height',i,z,' reduced to ',H_frc(i)
+         EndIf
+         !   write(2,*) '!!height ',i,z,H_frc(i), h_f(i)
+      EndDo
       if(step .or. stpv) then
         !call calc_alpha_Bz(alpha_Bz)
         If(FiPa) write(2,"('Lorentz force:',g11.4,'@ ',g11.4,'deg')") Force0,alpha_frc0
@@ -593,6 +601,7 @@
 215 Format('Zenith angle=',f7.3,' degree' ) ! ,', radial parameter=',f7.2,'[m]')
     FiPa=.false.
     Flush(unit=2)
+    Flush(unit=6)
 !    stop
     return
     end
