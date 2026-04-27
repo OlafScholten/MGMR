@@ -16,7 +16,7 @@ contains
     implicit none
     logical, Intent(in) :: Ft ! determines if this is run while fitting or after matching to data
     character*80 :: line=''
-    character*5 :: comnd
+    character*5 :: comnd, pulse
     character*30 :: OFile=''
     real(dp) :: z=0.
     integer :: eof,i,nxx
@@ -45,14 +45,17 @@ contains
            if(done) exit
            cycle
        endif
-       read(line,*,iostat=nxx) comnd, z, OFile
-       if(nxx.ne.0) Ofile=''
-       write(*,*) 'command=',comnd,' args=',z, 'OutFilePrefix=',trim(OFile),'<'
+       line=trim(line)//' " " " "'
+       read(line,*,iostat=nxx) comnd, z, OFile, pulse
+!      !write(*,*) 'line:', line
+       !write(*,*) 'nxx=',nxx,comnd, z, OFile
+       !if(nxx.ne.0) Ofile=''
+       write(*,*) 'command=',comnd,' args=',z, 'OutFilePrefix="',trim(OFile),'", pulse="',trim(pulse),'"'
        done=.true.
        if(trim(comnd).eq. 'grid') then
          call Observab_Grid(z, OFile)
        else if(trim(comnd).eq. 'theta') then
-         call Observab_theta(z, OFile)
+         call Observab_theta(z, OFile, pulse)
        else if(trim(comnd).eq. 'dist') then
          call Observab_dist(z, OFile)
        else
@@ -212,7 +215,7 @@ contains
     end
 !-------------------------------------------------------------------------
 !-------------------------------------------------------------------------
-    Subroutine Observab_theta(thetaD, OFile)   ! not unfolding antenna function
+    Subroutine Observab_theta(thetaD, OFile, pulse)   ! not unfolding antenna function
     use BigArrays, only : ObsDist_dim, ObsDist_step
     use BigArrays, only : CEx, CEy, CEr
     use BigArrays, only : Ex_nu_dwn,Ey_nu_dwn,Er_nu_dwn
@@ -221,13 +224,14 @@ contains
     implicit none
     real(dp), intent(in) :: thetaD
     character(len=30), intent(inout) :: OFile
+    character(len=5), intent(in) :: pulse
 !    complex(dp) :: E_nu_int1(i_nu_ini:i_nu_max),E_nu_int2(i_nu_ini:i_nu_max)
 !    complex(dp) :: Cx,Cy
     character*80 :: line
     integer :: i,idi
     real(dp) :: theta,Antd,StI,StQ,StU,StV
 !
-    if(trim(OFile).eq.'') OFile='plot/th_'
+    if(trim(OFile).eq.'') OFile='plot/'
       write(2,*) 'Calculate observables at theta=',thetaD,'degree'
       write(line,'(I3.3)') idint(thetaD)
       OPEN(UNIT=4,STATUS='unknown',FILE=trim(OFile)//trim(line)//'.csv')
@@ -239,12 +243,20 @@ contains
         call FFTransform_B(CEX, tTrace_dim_dwn, Ex_nu_dwn(i_nu_ini,idi), nuTrace_dim_dwn,i_nu_ini,i_nu_max)
         call FFTransform_B(CEy, tTrace_dim_dwn, Ey_nu_dwn(i_nu_ini,idi), nuTrace_dim_dwn,i_nu_ini,i_nu_max)
         call FFTransform_B(CEr, tTrace_dim_dwn, Er_nu_dwn(i_nu_ini,idi), nuTrace_dim_dwn,i_nu_ini,i_nu_max)
-!        if(idi.eq.5) then
-!            write(2,*) 'antenna distance=',Antd
-!            Do i=1,tTrace_dim,10
-!            write(2,*) i*tTrace_step,'[m], ',cex(i),abs(cex(i))
-!            enddo
-!        endif
+        !
+        If(pulse .eq. 'pulse' .and. idi.lt.100) Then
+            write(line,"(I3.3,'d',I2.2)") idint(thetaD),idi
+            OPEN(UNIT=9,STATUS='unknown',FILE=trim(OFile)//'th'//trim(line)//'.csv')
+            write(9,"('!  Pulse time trace @ angle & distance')")
+            write(9,"('!  ',F7.2, I5,7(1pG13.4) )") Antd, tTrace_dim_dwn, &
+               SamplingTime_dwn ! , padding*tTrace_step, nu_min, nu_max &
+               !, GroundLevel, Zen_sh, Azi_sh
+            Do i=1,tTrace_dim_dwn
+               Write(9,"(I5,3(1pG13.4))") i, Real(CEx(i)), Real(CEy(i)), Real(CEr(i))
+            EndDo ! i=1,tTrace_dim_dwn
+            Close(Unit=9)
+        EndIf
+        !
         call GetStokes(Antd,theta,StI,StQ,StU,StV,PrntStks=.true.)
         write(4,"(f9.4,' , ',f9.3,4(' , 'E13.4))") Antd,theta*180/pi,StI,StQ/StI,StU/StI,StV/StI  ! ,S/StI ,sqrt(StQ*StQ+Stu*Stu+Stv*StV)
       enddo  ! idi loop over distances to the core
@@ -614,6 +626,10 @@ contains
       StQ=1. ; StU=0. ; StV=0.
      EndIf
      omega=pi*(i_nu_ini+i_nu_max)* nuTrace_step_dwn
+     !write(2,*) '!GetStokes-dt',Ty,TPy, Tx,TPx, SamplingTime_dwn
+     !Flush(2)
+     If(TPy.le.0.d0) TPY=1.
+     If(TPx.le.0.d0) TPx=1.  ! to avoid infty, not really essential
      dt=(Ty/TPy - Tx/TPx)*SamplingTime_dwn/c_l
      if(present(PrntStks))then
          if(.not.PrntStks) return

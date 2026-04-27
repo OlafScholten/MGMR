@@ -31,12 +31,13 @@
     character*1 :: Digit
     real(dp) :: SamplingTime,h(0:N_step_max),F(0:N_step_max),a(0:N_step_max),dfx
     real(dp) :: sin_alpha
+    logical :: Fitting  ! not used
     NAMELIST /ShPars/ OutFileLabel,test,AtmHei_dim,AtmHei_step, &
         SelectFh, lam_tc ,lam_100, XDepAlpha, IntegrateCurrent, PancakeIncField,  &
         ObsDist_dim, ObsDist_Step,  tTrace_step, lamx, u0, a_ChX, J0Q, padding, D_ESmooth, AlternativeSmooth, u0, &
         F_lim, nu_min,nu_max, SamplingTime, StParRange, Voltages, rh0,MoliereRadius, J0t, GroundLevel, X_0, X_max, &
         RnrmA, RnrmB, Zen_sh, Azi_sh, Zen_B, Azi_B, Intensity_Weight, NoisePower, Energy_sh, RL_param, R_0,L_0, Fit_StI, &
-        X_02, lamx2, X_max2, R_02,L_02, Energy_sh2, NF_max, QuadSmth, XdepFrc
+        X_02, lamx2, X_max2, R_02,L_02, Energy_sh2, NF_max, QuadSmth, XdepFrc,                   Fitting
     !
     Test=.false.
     AtmHei_dim=2000d0 ; AtmHei_step=10.d0 ! [m]
@@ -61,6 +62,7 @@
 !    first=.true.
     read(*,NML = ShPars)
     OPEN(UNIT=2,STATUS='unknown',FILE=TRIM(OutFile)//TRIM(OutFileLabel)//'.out')
+    write(*,*) 'Output to file: ', TRIM(OutFile)//TRIM(OutFileLabel)//'.out'
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     write(2,"(3x,5(1H-),1x,'MGMR3D_fit release of ',A22,25(1H-))") release
     CALL DATE_AND_TIME (REAL_C(1),REAL_C(2),REAL_C(3),DATE_T)
